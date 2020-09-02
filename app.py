@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 app.config["SECRET_KEY"] = "make_it_rain"
 
-@app.route("/", methods=["GET", "POST"])
+@app.route("/todos/", methods=["GET", "POST"])
 def todos_list():
     form = TodoForm()
     error = ""
@@ -18,7 +18,7 @@ def todos_list():
     return render_template("todos.html", form=form, todos=todos.all(), error=error)
 
 
-@app.route("/<int:todo_id>/", methods=["GET", "POST"])
+@app.route("/todos/<int:todo_id>/", methods=["GET", "POST"])
 def todo_details(todo_id):
     todo = todos.get(todo_id)
     
