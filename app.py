@@ -4,7 +4,7 @@ from models import todos
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = "make_it_rain"
+app.config["SECRET_KEY"] = "gfbfgbfbggfbfgb"
 
 @app.route("/todos/", methods=["GET", "POST"])
 def todos_list():
