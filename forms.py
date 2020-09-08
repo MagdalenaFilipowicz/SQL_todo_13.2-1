@@ -6,4 +6,4 @@ from wtforms.validators import DataRequired
 class TodoForm(FlaskForm):
     title = StringField('title', validators=[DataRequired()])
     description = TextField('desctrition', validators=[DataRequired()])
-    done = BooleanField('status', validators=[DataRequired()])
+    status = BooleanField('status', validators=[DataRequired()])

@@ -2,31 +2,31 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tu tworzymy todo i widzimy listę</title>
-    <style>
-        table, th, tr, td {border: 1px solid black;}
-    </style>
+    <title>To work</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+   
 </head>
+<body style ="margin-top: 50px;" class="ui container">
+<h1 class="ui center algined header">Tasks</h1>
 
-<h2>Lista zadań</h2>
-
-<table>
+<table class="ui celled table">
     <thead>
-    <th>Tytuł</th>
-    <th>Opis</th>
-    <th>Czy zrobione?</th>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Status</th>
     </thead>
-{% for todo in todos %}
+{% for task in tasks %}
     <tr>
-        <td><a href="/todos/{{ loop.index }}">{{ todo.title }}</a></td>
-        <td>{{ todo.description }}</td>
-        <td>{{ todo.status }}</td>
+        <td><a href="{{ url_for('todo_details', todo_id = task[0]) }}">{{ task[1] }}</a></td>
+        <td>{{ task[2] }}</td>
+        <td>{{ task[3] }}</td>
     </tr>
 {% endfor %}
 </table>
 <div>
-    <h2> Dodaj nowe zadanie: </h2>
-    <form method="POST" action="/todos/">
+    <h2> Add new task </h2>
+    <form class="ui form" method="POST" action="/">
         {{ form.hidden_tag() }}
         <table>
             {% for field in form if field.widget.input_type != 'hidden' %}
@@ -36,7 +36,7 @@
                 </tr>
             {% endfor %}
         </table>
-        <input type="submit" value="Go">
+        <input style="margin-left: 30px;"class="ui blue button" type="submit" value="Add" name="btn">
     </form>
 </div>
 </body>

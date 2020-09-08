@@ -1,42 +1,44 @@
-from flask import Flask, request, render_template, redirect, url_for
+from flask import Flask
+from flask import request, render_template, redirect, url_for
 from forms import TodoForm
-from models import todos
+from models import todossqlite
+import os
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.urandom(24)
 
-app.config["SECRET_KEY"] = "gfbfgbfbggfbfgb"
-
-@app.route("/todos/", methods=["GET", "POST"])
+@app.route("/", methods=["GET", "POST"])
 def todos_list():
-    form = TodoForm()
+    form = TodoForm() 
+    tasks = todossqlite.show()
     error = ""
     if request.method == "POST":
-        if form.validate_on_submit():
-            todos.create(tuple(form.data.values())[:3])
-        return redirect(url_for("todos_list"))
+        if form.validate_on_submit(): 
+            todossqlite.create()
+            task_id = todossqlite.add_task(form.data)
+            return redirect(url_for("todos_list"))
 
-    return render_template("todos.html", form=form, todos=todos.all(), error=error)
+    return render_template("todos.html", form=form, tasks=tasks, error=error)
 
 
-@app.route("/todos/<int:todo_id>/", methods=["GET", "POST"])
+@app.route("/<int:todo_id>/", methods=["GET", "POST"])
 def todo_details(todo_id):
-    todo = todos.get(todo_id)
-    
-    todo_dict = {
-        'title' : todo[1],
-        'description' : todo[2],
-        'done' : todo[3]
-    }
-    
-    form = TodoForm(data=todo_dict)
-
+    todo = todossqlite.get(todo_id)
+    data_todo = {}
+    data_todo['title'] = todo[0][1]
+    data_todo['description'] = todo[0][2]
+    data_todo['status'] = todo[0][3]
+    form_todo = TodoForm(data=data_todo)
+   
     if request.method == "POST":
-        if form.validate_on_submit():
-            todos.update(todo_id, tuple(form.data.values())[:3])
+        if request.form["btn"] == "Save":
+            todossqlite.update(todo_id=todo_id, data=form_todo.data)
+        if request.form["btn"] == "Delete":
+            todossqlite.delete(todo_id)
         return redirect(url_for("todos_list"))
-    return render_template("todo.html", form=form, todo_id=todo_id)
+
+    return render_template("todo.html", form=form_todo, todo_id=todo_id)
 
 
 if __name__ == "__main__":
     app.run(debug=True)
-
