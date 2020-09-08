@@ -10,7 +10,7 @@ app.config["SECRET_KEY"] = os.urandom(24)
 @app.route("/", methods=["GET", "POST"])
 def todos_list():
     form = TodoForm() 
-    tasks = todossqlite.show()
+    tasks = todossqlite.all()
     error = ""
     if request.method == "POST":
         if form.validate_on_submit(): 

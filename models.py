@@ -110,7 +110,7 @@ class TodosSQLite():
             execute_sql(cur, create_task_sql)
             conn.close()
     
-    def show(self):
+    def all(self):
         sql = "SELECT * FROM tasks"
         conn = create_connection(self.db_file)
         if conn is not None:
