@@ -4,8 +4,8 @@ from forms import TodoForm
 from models import todossqlite
 import os
 
-app = Flask(__name__)
-app.config["SECRET_KEY"] = os.urandom(24)
+app=Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('marta_config.cfg', silent=True)
 
 @app.route("/", methods=["GET", "POST"])
 def todos_list():
