@@ -5,8 +5,9 @@ from models import todossqlite
 import os
 
 app=Flask(__name__, instance_relative_config=True)
-app.config.from_pyfile('marta_config.cfg', silent=True)
-
+#app.config.from_pyfile('martar_config.cfg', silent=True)
+SECRET_KEY = os.urandom(32)
+app.config['SECRET_KEY'] = SECRET_KEY
 @app.route("/", methods=["GET", "POST"])
 def todos_list():
     form = TodoForm() 
